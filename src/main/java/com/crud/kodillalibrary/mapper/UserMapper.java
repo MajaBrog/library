@@ -18,14 +18,16 @@ public class UserMapper {
 
     public UserDto mapToUserDto(final User user) {
         return new UserDto(
+                user.getId(),
                 user.getName(),
                 user.getSurname(),
+                user.getDateOfAccountCreation(),
                 user.getEmail());
     }
 
     public List<UserDto> mapToUserDtoList(final List<User> userList){
         return userList.stream()
-                .map(u->new UserDto(u.getName(),u.getSurname(),u.getEmail()))
+                .map(u->new UserDto(u.getId(),u.getName(),u.getSurname(),u.getDateOfAccountCreation(),u.getEmail()))
                 .collect(Collectors.toList());
     }
 }

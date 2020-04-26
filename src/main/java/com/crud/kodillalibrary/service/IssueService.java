@@ -47,13 +47,16 @@ public class IssueService {
 
     public Issue createIssue(final Issue issue) {
         ofNullable(issue).ifPresent(i -> emailService.send(new Mail(i.getUser().getEmail(), SUBJECT,
-                "New issue:" + i.getCopy() + " has been created." + "\n" +
-                        "Enjoy reading and thank you for choosing our library!")));
+                "New issue of:" + i.getCopy().getBook().getTitle() + ","+ i.getCopy().getBook().getAuthor() + " has been created." + "\n" +
+                        "Enjoy reading and thank you for choosing our library!"),i.getUser()));
+        Copy copy = issue.getCopy();
+        copy.setStatus(Status.BORROWED);
+        copyRepository.save(copy);
         return saveIssue(issue);
     }
 
     @Transactional
-    public void returnCopy(final Long id) {
+    public void returnBook(final Long id) {
         Issue issue = getIssue(id).orElseThrow(RecordNotFoundException::new);
         issue.setDueDate(LocalDate.now());
         saveIssue(issue);
@@ -61,8 +64,8 @@ public class IssueService {
         copy.setStatus(Status.AVAILABLE);
         copyRepository.save(copy);
         ofNullable(issue).ifPresent(i -> emailService.send(new Mail(i.getUser().getEmail(), SUBJECT,
-                i.getCopy() + " Has been returned." + "\n" +
-                        "Thank you for choosing our library!")));
+                 i.getCopy().getBook().getTitle() + ","+ i.getCopy().getBook().getAuthor()  + " Has been returned." + "\n" +
+                        "Thank you for choosing our library!"),i.getUser()));
     }
 
 

@@ -1,17 +1,18 @@
 package com.crud.kodillalibrary.domain;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Getter
 @NoArgsConstructor
+@AllArgsConstructor
 public class CopyDto {
     private Long id;
+    private Long bookId;
     private Status status;
-    private Book book;
 
-    public CopyDto(Book book, Status status) {
-        this.book = book;
-        this.status = status;
+    public CopyDto(Long bookId) {
+        this.bookId = bookId;
     }
 }

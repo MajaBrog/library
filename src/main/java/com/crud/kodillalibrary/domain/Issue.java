@@ -18,6 +18,7 @@ public class Issue {
     private Copy copy;
     @ManyToOne( fetch = FetchType.LAZY)
     private User user;
+    @Column
     @CreationTimestamp
     private LocalDate dateOfIssue;
     @Column

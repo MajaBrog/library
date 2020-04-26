@@ -33,4 +33,9 @@ public class IssueController {
     public void createIssue(@RequestBody IssueDto issueDto) {
         issueService.createIssue(issueMapper.mapToIssue(issueDto));
     }
+
+    @RequestMapping(method = RequestMethod.PUT, value = "returnBook")
+    public void returnBook(Long issueId) {
+         issueService.returnBook(issueId);
+    }
 }

@@ -2,6 +2,7 @@ package com.crud.kodillalibrary.domain;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
 import java.time.LocalDate;
@@ -20,16 +21,17 @@ public class User {
     @Column
     private String surname;
     @Column
+    @CreationTimestamp
     private LocalDate dateOfAccountCreation;
-    @Column
+    @Column(unique = true)
     private String email;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
+    private List<Issue> issues = new ArrayList<>();
 
     public User(String name, String surname, String email) {
         this.name = name;
         this.surname = surname;
         this.email=email;
     }
-
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "user")
-    private List<Issue> issues = new ArrayList<>();
 }

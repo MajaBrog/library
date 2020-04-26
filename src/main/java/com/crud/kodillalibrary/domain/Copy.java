@@ -24,8 +24,8 @@ public class Copy {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "copy")
     private List<Issue> issues = new ArrayList<>();
 
-    public Copy(Book book, Status status) {
+    public Copy(Book book) {
         this.book = book;
-        this.status = status;
+        this.status = Status.AVAILABLE;
     }
 }
