@@ -12,7 +12,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/v1/user")
+@RequestMapping("/v1")
 public class UserController {
 
     @Autowired
@@ -21,27 +21,27 @@ public class UserController {
     @Autowired
     private UserMapper userMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "getUsers")
+    @RequestMapping(method = RequestMethod.GET, value = "/user")
     private List<UserDto> getUsers(){
         return userMapper.mapToUserDtoList(userService.getAllUsers());
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getUser")
-    public UserDto getUser(Long userId) throws RecordNotFoundException {
+    @RequestMapping(method = RequestMethod.GET, value = "/user/{userId}")
+    public UserDto getUser(@PathVariable Long userId) throws RecordNotFoundException {
         return userMapper.mapToUserDto(userService.getUser(userId).orElseThrow(RecordNotFoundException::new));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "deleteUser")
-    public void deleteUser(Long userId) {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/user/{userId}")
+    public void deleteUser(@PathVariable Long userId) {
         userService.deleteUser(userId);
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "updateUser")
+    @RequestMapping(method = RequestMethod.PUT, value = "/user")
     public UserDto updateUser(@RequestBody UserDto userDto) {
         return userMapper.mapToUserDto(userService.saveUser(userMapper.mapToUser(userDto)));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createUser", consumes = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/user", consumes = APPLICATION_JSON_VALUE)
     public void createUser(@RequestBody UserDto userDto) {
         userService.saveUser(userMapper.mapToUser(userDto));
     }

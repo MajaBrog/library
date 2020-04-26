@@ -12,7 +12,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @CrossOrigin("*")
 @RestController
-@RequestMapping("/v1/copy")
+@RequestMapping("/v1")
 public class CopyController {
     @Autowired
     private CopyService copyService;
@@ -20,22 +20,22 @@ public class CopyController {
     @Autowired
     private CopyMapper copyMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "getCopies")
+    @RequestMapping(method = RequestMethod.GET, value = "/copy")
     private List<CopyDto> getCopiesOfBook(Long bookId){
         return copyMapper.mapToCopyDtoList(copyService.getAllCopiesOfBook(bookId));
     }
-    @RequestMapping(method = RequestMethod.GET, value = "getCopy")
-    public CopyDto getCopy(Long copyId) throws RecordNotFoundException {
+    @RequestMapping(method = RequestMethod.GET, value = "/copy/{copyId}")
+    public CopyDto getCopy(@PathVariable Long copyId) throws RecordNotFoundException {
         return copyMapper.mapToCopyDto(copyService.getCopy(copyId).orElseThrow(RecordNotFoundException::new));
     }
 
-    @RequestMapping(method = RequestMethod.DELETE, value = "deleteCopy")
-    public void deleteCopy(Long copyId) {
+    @RequestMapping(method = RequestMethod.DELETE, value = "/copy/{copyId}")
+    public void deleteCopy(@PathVariable Long copyId) {
         copyService.deleteCopy(copyId);
     }
 
 
-    @RequestMapping(method = RequestMethod.POST, value = "createCopy", consumes = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/copy", consumes = APPLICATION_JSON_VALUE)
     public void createCopy(@RequestBody CopyDto copyDto) {
         copyService.saveCopy(copyMapper.mapToCopy(copyDto));
     }

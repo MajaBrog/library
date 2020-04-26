@@ -12,30 +12,30 @@ import static org.springframework.http.MediaType.APPLICATION_JSON_VALUE;
 
 @CrossOrigin(origins = "*")
 @RestController
-@RequestMapping("/v1/issue")
+@RequestMapping("/v1")
 public class IssueController {
     @Autowired
     private IssueService issueService;
     @Autowired
     private IssueMapper issueMapper;
 
-    @RequestMapping(method = RequestMethod.GET, value = "getIssues")
+    @RequestMapping(method = RequestMethod.GET, value = "/issue")
     private List<IssueDto> getIssuesForUser(Long userId) {
         return issueMapper.mapToIssueDtoList(issueService.getAllIssuesForUser(userId));
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "getIssue")
-    public IssueDto getIssue(Long issueId) throws RecordNotFoundException {
+    @RequestMapping(method = RequestMethod.GET, value = "/issue/{issueId}")
+    public IssueDto getIssue(@PathVariable Long issueId) throws RecordNotFoundException {
         return issueMapper.mapToIssueDto(issueService.getIssue(issueId).orElseThrow(RecordNotFoundException::new));
     }
 
-    @RequestMapping(method = RequestMethod.POST, value = "createIssue", consumes = APPLICATION_JSON_VALUE)
+    @RequestMapping(method = RequestMethod.POST, value = "/issue", consumes = APPLICATION_JSON_VALUE)
     public void createIssue(@RequestBody IssueDto issueDto) {
         issueService.createIssue(issueMapper.mapToIssue(issueDto));
     }
 
-    @RequestMapping(method = RequestMethod.PUT, value = "returnBook")
-    public void returnBook(Long issueId) {
+    @RequestMapping(method = RequestMethod.PUT, value = "issue/{issueId}")
+    public void returnBook(@PathVariable Long issueId) {
          issueService.returnBook(issueId);
     }
 }
